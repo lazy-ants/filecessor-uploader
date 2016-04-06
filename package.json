@@ -15,5 +15,7 @@
   "bugs": {
     "url": "https://github.com/lazy-ants/filecessor-uploader/issues"
   },
-  "homepage": "https://github.com/lazy-ants/filecessor-uploader#readme"
+  "homepage": "https://github.com/lazy-ants/filecessor-uploader#readme",
+  "dependencies": {
+  }
 }
