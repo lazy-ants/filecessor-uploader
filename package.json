@@ -1,0 +1,19 @@
+{
+  "name": "filecessor-uploader",
+  "version": "1.0.0",
+  "description": "Javascript uploader with crop, resize and rotation support for filecessor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazy-ants/filecessor-uploader.git"
+  },
+  "author": "Lazy Ants <hello@lazy-ants.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lazy-ants/filecessor-uploader/issues"
+  },
+  "homepage": "https://github.com/lazy-ants/filecessor-uploader#readme"
+}
