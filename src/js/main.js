@@ -4,7 +4,6 @@ var filecessorOptions;
 $(function(){ 
     $.get('src/templates/UploadImagePopupTemplate.htm', function(template) {
         $.tmpl(template).appendTo('body');
-        $('#filecessor-modal').modal(); //TODO: delete this row
     });
 
     $(document).on('change', '#filecessor-input', function() {
@@ -50,6 +49,17 @@ $(function(){
     };
 
     function applyRotateOptions (rotateOtions) {
+        $('#back-rotate-btn').click(function () {
+            var currentDegree = getRotationDegrees($('#uploaded-image'));
+            var newDegree = currentDegree < 90 ? currentDegree + 270 : currentDegree - 90;
+            setRotationDegrees($('#uploaded-image'), newDegree);
+        });
+        $('#forward-rotate-btn').click(function () {
+            var currentDegree = getRotationDegrees($('#uploaded-image'));
+            var newDegree = currentDegree < 270 ? currentDegree + 90 : currentDegree - 270;
+            setRotationDegrees($('#uploaded-image'), newDegree);
+        });
+
         if (typeof (rotateOtions) === "object") {
             //TODO: apply every rotate property
         }
@@ -59,6 +69,30 @@ $(function(){
         if (typeof (resizeOtions) === "object") {
             //TODO: apply every resize property
         }
+    };
+
+    function getRotationDegrees(obj) {
+        var matrix = obj.css("-webkit-transform") ||
+        obj.css("-moz-transform")    ||
+        obj.css("-ms-transform")     ||
+        obj.css("-o-transform")      ||
+        obj.css("transform");
+        if(matrix !== 'none') {
+            var values = matrix.split('(')[1].split(')')[0].split(',');
+            var a = values[0];
+            var b = values[1];
+            var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
+        } else { var angle = 0; }
+        return (angle < 0) ? angle + 360 : angle;
+    };
+
+    function setRotationDegrees(obj, degree) {
+        var degreeValue = 'rotate(' + degree + 'deg)';
+        obj.css('transform', degreeValue);
+        obj.css("-webkit-transform", degreeValue);
+        obj.css("-moz-transform", degreeValue);
+        obj.css("-ms-transform", degreeValue);
+        obj.css("-o-transform", degreeValue);
     };
 
 });
