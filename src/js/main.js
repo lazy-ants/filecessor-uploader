@@ -26,10 +26,30 @@ $(function(){
                    var link = data.links[i];
                    if (link.rel == 'original') {
                        originLink = link.href;
+
+                       var img = $("<img>", {id: "uploaded-image", class: "uploaded-image"});
+                       var canvas = $("<canvas>", {id: "canvas-image"});
+                       $("#editor-container").append(img);
+                       $("#editor-container").append(canvas);
+
+                       img = $('#uploaded-image')[0];
+                       $('#filecessor-modal').modal();
+                       img.addEventListener("load", function() {
+                            setTimeout(function () {
+                                drawImageInCanvas(img);
+                            }, 100);
+                       }, false);
                        $('#uploaded-image').attr("src", originLink);
+
+                       $('#close-modal')[0].addEventListener("click", function() {
+                           $( "#uploaded-image" ).remove();
+                           $( "#canvas-image" ).remove();
+                           $("#filecessor-input").get(0).value = "";
+                           $('#back-rotate-btn').off("click");
+                           $('#forward-rotate-btn').off("click");
+                       }, false);
                    };
                }
-               $('#filecessor-modal').modal();
            },
            error: function () {
            }
@@ -50,14 +70,15 @@ $(function(){
 
     function applyRotateOptions (rotateOtions) {
         $('#back-rotate-btn').click(function () {
-            var currentDegree = getRotationDegrees($('#uploaded-image'));
+            var currentDegree = parseInt($('#canvas-image').attr('rotate'));
             var newDegree = currentDegree < 90 ? currentDegree + 270 : currentDegree - 90;
-            setRotationDegrees($('#uploaded-image'), newDegree);
+            rotateImageInCanvas ($('#uploaded-image')[0], newDegree);
         });
+
         $('#forward-rotate-btn').click(function () {
-            var currentDegree = getRotationDegrees($('#uploaded-image'));
+            var currentDegree = parseInt($('#canvas-image').attr('rotate'));
             var newDegree = currentDegree < 270 ? currentDegree + 90 : currentDegree - 270;
-            setRotationDegrees($('#uploaded-image'), newDegree);
+            rotateImageInCanvas ($('#uploaded-image')[0], newDegree);
         });
 
         if (typeof (rotateOtions) === "object") {
@@ -71,29 +92,49 @@ $(function(){
         }
     };
 
-    function getRotationDegrees(obj) {
-        var matrix = obj.css("-webkit-transform") ||
-        obj.css("-moz-transform")    ||
-        obj.css("-ms-transform")     ||
-        obj.css("-o-transform")      ||
-        obj.css("transform");
-        if(matrix !== 'none') {
-            var values = matrix.split('(')[1].split(')')[0].split(',');
-            var a = values[0];
-            var b = values[1];
-            var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
-        } else { var angle = 0; }
-        return (angle < 0) ? angle + 360 : angle;
-    };
+    function drawImageInCanvas (img) {
+        var canvas = $('#canvas-image')[0];
+        var cContext = canvas.getContext('2d');
+        var cw = img.width, ch = img.height, cx = 0, cy = 0;
+        canvas.setAttribute('width', cw);
+        canvas.setAttribute('height', ch);
+        cContext.drawImage(img, cx, cy, cw, ch);
+        $('#canvas-image').attr("rotate", 0);
+    }
 
-    function setRotationDegrees(obj, degree) {
-        var degreeValue = 'rotate(' + degree + 'deg)';
-        obj.css('transform', degreeValue);
-        obj.css("-webkit-transform", degreeValue);
-        obj.css("-moz-transform", degreeValue);
-        obj.css("-ms-transform", degreeValue);
-        obj.css("-o-transform", degreeValue);
-    };
+    function rotateImageInCanvas (img, rotateDegree) {
+        var canvas = $('#canvas-image')[0];
+        var cContext = canvas.getContext('2d');
+
+        var cw = img.width, ch = img.height, scaleW = cw, scaleH = ch, cx = 0, cy = 0;
+        //   Calculate new canvas size and x/y coorditates for image
+        switch(rotateDegree){
+            case 90:
+                cw = img.width;
+                ch = img.width * img.width / img.height;
+                scaleW = ch;
+                scaleH = cw;
+                cy = img.width * (-1);
+                break;
+            case 180:
+                cx = img.width * (-1);
+                cy = img.height * (-1);
+                break;
+            case 270:
+                cw = img.width;
+                ch = img.width * img.width / img.height;
+                scaleW = ch;
+                scaleH = cw;
+                cx = ch * (-1);
+                break;
+        }
+
+        canvas.setAttribute('width', cw);
+        canvas.setAttribute('height', ch);
+        cContext.rotate(rotateDegree * Math.PI / 180);
+        cContext.drawImage(img, cx, cy, scaleW, scaleH);
+        $('#canvas-image').attr("rotate", rotateDegree);
+    }
 
 });
 
