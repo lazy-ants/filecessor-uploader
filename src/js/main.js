@@ -1,8 +1,15 @@
+var FILECESSOR_URL = "http://fc.lazy-ants.com";
+var filecessorOptions;
+
 $(function(){ 
+    $.get('src/templates/UploadImagePopupTemplate.htm', function(template) {
+        $.tmpl(template).appendTo('body');
+        $('#filecessor-modal').modal(); //TODO: delete this row
+    });
 
-    var FILECESSOR_URL = "http://fc.lazy-ants.com";
+    $(document).on('change', '#filecessor-input', function() {
+        applyFilecessorOptions(filecessorOptions);
 
-    $(document).on('change', '.btn-file :file', function() {
         var input = $(this),
             file = input.get(0).files[0],
             formData = new FormData();
@@ -11,9 +18,6 @@ $(function(){
         $.ajax({
            url: FILECESSOR_URL + '/api/photos/upload',
            method: 'POST',
-           // headers: {
-           //     "Authorization": "Bearer " + fileCessorToken
-           // },
            data: formData,
            contentType: false,
            processData: false,
@@ -27,15 +31,35 @@ $(function(){
                    };
                }
                $('#filecessor-modal').modal();
-
-               // $('.loader').hide();
            },
            error: function () {
-               // $('.loader').hide();
            }
-       });
+        });
     });
 
+    function applyFilecessorOptions (options) {
+        !options.crop ? $('#crop-btn').css('display', 'none') : applyCropOptions(options.crop);
+        !options.rotate ? $('#back-rotate-btn, #forward-rotate-btn').css('display', 'none') : applyRotateOptions(options.rotate);
+        !options.resize ? $('#resize-plus-btn, #resize-minus-btn').css('display', 'none') : applyResizeOptions(options.resize);
+    };
 
+    function applyCropOptions (cropOtions) {
+        if (typeof (cropOtions) === "object") {
+            //TODO: apply every crop property
+        }
+    };
+
+    function applyRotateOptions (rotateOtions) {
+        if (typeof (rotateOtions) === "object") {
+            //TODO: apply every rotate property
+        }
+    };
+
+    function applyResizeOptions (resizeOtions) {
+        if (typeof (resizeOtions) === "object") {
+            //TODO: apply every resize property
+        }
+    };
 
 });
+
