@@ -1,4 +1,4 @@
-<div id="filecessor-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="filecessor-modal" aria-hidden="true">
+<div id="filecessor-modal" class="modal fade bs-example-modal-lg filecessor-modal" tabindex="-1" role="dialog" aria-labelledby="filecessor-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,19 +8,49 @@
             <div class="modal-body">
                 <div class="row text-center">
                     <div class="col-md-6 col-md-offset-3">
-                        <button id="back-rotate-btn" type="button" class="btn btn-primary circle-btn">
+                        <button 
+                        id="back-rotate-btn" 
+                        type="button" 
+                        class="btn btn-primary circle-btn" 
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Rotate left">
                             <i class="fa fa-lg fa-level-up fa-rotate-270"></i>
                         </button>
-                        <button id="forward-rotate-btn" type="button" class="btn btn-primary circle-btn">
+                        <button 
+                        id="forward-rotate-btn" 
+                        type="button" 
+                        class="btn btn-primary circle-btn" 
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Rotate right">
                             <i class="fa fa-lg fa-level-down fa-rotate-270"></i>
                         </button>
-                        <button id="crop-btn" type="button" class="btn btn-primary circle-btn">
+                        <button 
+                        id="crop-btn" 
+                        type="button" 
+                        class="btn btn-primary circle-btn" 
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Click and drag on the image to select an area">
                             <i class="fa fa-lg fa-crop"></i>
                         </button>
-                        <button id="resize-plus-btn" type="button" class="btn btn-primary circle-btn">
+                        <button 
+                        id="resize-plus-btn" 
+                        type="button" 
+                        class="btn btn-primary circle-btn"
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Increase">
                             <i class="fa fa-lg fa-plus"></i>
                         </button>
-                        <button id="resize-minus-btn" type="button" class="btn btn-primary circle-btn">
+                        <button 
+                        id="resize-minus-btn" 
+                        type="button" 
+                        class="btn btn-primary circle-btn"
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Reduce">
                             <i class="fa fa-lg fa-minus"></i>
                         </button>
                     </div>

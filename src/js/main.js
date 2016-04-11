@@ -37,18 +37,14 @@ $(function(){
             }
         });
     });
+    
+    var ias;
 
     //applying config options start _______________________________________________________________
     function applyFilecessorOptions (options) {
         !options.crop ? $('#crop-btn').css('display', 'none') : applyCropOptions(options.crop);
         !options.rotate ? $('#back-rotate-btn, #forward-rotate-btn').css('display', 'none') : applyRotateOptions(options.rotate);
         !options.resize ? $('#resize-plus-btn, #resize-minus-btn').css('display', 'none') : applyResizeOptions(options.resize);
-    };
-
-    function applyCropOptions (cropOtions) {
-        if (typeof (cropOtions) === "object") {
-            //TODO: apply every crop property
-        }
     };
 
     function applyRotateOptions (rotateOtions) {
@@ -69,7 +65,41 @@ $(function(){
         }
     };
 
+    function applyCropOptions (cropOtions) {
+        var cropBtn = $('#crop-btn');
+        cropBtn.click(function () {
+            ias = $('#canvas-image').imgAreaSelect({
+                handles: true,
+                parent: '.modal-body',
+                instance: true,
+                disable: true,
+                onSelectEnd: function (img, selection) {
+                }
+            });
+            $('#canvas-image').panzoom("disable");
+            ias.setOptions({ enable: true });
+        });
+        if (typeof (cropOtions) === "object") {
+            //TODO: apply every crop property
+        }
+    };
+
     function applyResizeOptions (resizeOtions) {
+
+        // $("#resize-plus-btn").click(function () {
+        //     if (ias) {
+        //         ias.setOptions({ enable: false });
+        //     }
+        //     $('#canvas-image').panzoom("enable");
+        //     changeSizeCanvasElToCanvasImg ();
+        // });
+        // $("#resize-minus-btn").click(function () {
+        //     if (ias) {
+        //         ias.setOptions({ enable: false });
+        //     }
+        //     $('#canvas-image').panzoom("enable");
+        //     changeSizeCanvasElToCanvasImg ();
+        // });
         if (typeof (resizeOtions) === "object") {
             //TODO: apply every resize property
         }
@@ -77,8 +107,8 @@ $(function(){
     //applying config options end _______________________________________________________________
 
     function createDOMimgAndCnvs (imgSrc) {
-        var img = $("<img>", {id: "uploaded-image", class: "uploaded-image"});
-        var canvas = $("<canvas>", {id: "canvas-image"});
+        var img = $("<img>", {id: "uploaded-image", class: "uploaded-image resizeble"});
+        var canvas = $("<canvas>", {id: "canvas-image", class: "resizeble"});
         $("#editor-container").append(img);
         $("#editor-container").append(canvas);
         img = $('#uploaded-image')[0];
@@ -90,6 +120,17 @@ $(function(){
             }, 100);
         }, false);
         $('#uploaded-image').attr("src", originLink);
+
+        $('#uploaded-image').panzoom({
+            $zoomIn: $("#resize-plus-btn"),
+            $zoomOut: $("#resize-minus-btn"),
+            disablePan: true,
+            $set: $('.modal-body').find('.resizeble'),
+            onZoom: function (e) {
+                console.log($('#uploaded-image').panzoom("getMatrix"))
+                
+            }
+        });
     };
 
     //operations with image start _____________________________________________________
@@ -100,6 +141,7 @@ $(function(){
         canvas.setAttribute('width', cw);
         canvas.setAttribute('height', ch);
         cContext.drawImage(img, cx, cy, cw, ch);
+        console.log(cContext);
         $('#canvas-image').attr("rotate", 0);
     }
 
@@ -135,6 +177,10 @@ $(function(){
         cContext.rotate(rotateDegree * Math.PI / 180);
         cContext.drawImage(img, cx, cy, scaleW, scaleH);
         $('#canvas-image').attr("rotate", rotateDegree);
+    }
+
+    function changeSizeCanvasElToCanvasImg () {
+        console.log($('#canvas-image')[0].getContext('2d'));
     }
 
     //operations with image end _____________________________________________________
