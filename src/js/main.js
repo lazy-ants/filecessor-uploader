@@ -127,7 +127,12 @@ $(function(){
             disablePan: true,
             $set: $('.modal-body').find('.resizeble'),
             onZoom: function (e) {
-                console.log($('#uploaded-image').panzoom("getMatrix"))
+                var coefWidth = +$('#uploaded-image').panzoom("getMatrix")[0];
+                var coefHeight = +$('#uploaded-image').panzoom("getMatrix")[3];
+/*                var canvas = $('#canvas-image')[0];
+                console.log(canvas.width, coefWidth);
+                canvas.setAttribute('width', canvas.width * coefWidth);
+                canvas.setAttribute('height', canvas.height * coefHeight);*/
                 
             }
         });
